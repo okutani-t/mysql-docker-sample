@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mysql_container
+    platform: linux/x86_64
+    environment:
+      - MYSQL_DATABASE=sample_db
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=myapp
+      - MYSQL_PASSWORD=password
+      - TZ=Asia/Tokyo
+    ports:
+      - 3307:3306
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./initdb.d:/docker-entrypoint-initdb.d
+    tty: true
+
+volumes:
+  db-data:
+    driver: local
